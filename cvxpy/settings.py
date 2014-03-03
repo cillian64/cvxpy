@@ -45,6 +45,8 @@ UNKNOWN = "solver_error"
 
 # Map of solver status to cvxpy status.
 CVXOPT = "cvxopt"
+CVXOPT_CLP = "cvxopt CLP"
+CVXOPT_CONELP = "cvxopt cone LP"
 CVXOPT_STATUS = {'optimal': OPTIMAL,
                  'primal infeasible': INFEASIBLE,
                  'dual infeasible': UNBOUNDED,

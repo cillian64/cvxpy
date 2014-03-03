@@ -255,8 +255,6 @@ class Problem(u.Canonical):
         # Target cvxopt solver if SDP or invalid for ECOS.
         if solver == s.CVXOPT or len(dims['s']) > 0 \
             or min(G.shape) == 0 or constr_map[s.NONLIN]:
-            # Solver type:
-            self.solver = s.CVXOPT
             # Convert c,A,b,G,h to cvxopt matrices.
             c, b, h = map(lambda vec:
                 self._CVXOPT_DENSE_INTF.const_to_matrix(vec,
@@ -268,6 +266,8 @@ class Problem(u.Canonical):
                 [A, G])
             # Target cvxopt clp if nonlinear constraints exist
             if constr_map[s.NONLIN]:
+                # Solver type:
+                self.solver = s.CVXOPT_CLP
                 # Get the nonlinear constraints.
                 F = self._merge_nonlin(constr_map[s.NONLIN], var_offsets,
                                        x_length)
@@ -278,6 +278,8 @@ class Problem(u.Canonical):
                 status = s.SOLVER_STATUS[s.CVXOPT][results['status']]
                 primal_val = results['primal objective']
             else:
+                # Solver type:
+                self.solver = s.CVXOPT_CONELP
                 # Get custom kktsolver.
                 kktsolver = get_kktsolver(G, dims, A)
                 # Adjust tolerance to account for regularization.
