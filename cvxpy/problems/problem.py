@@ -65,6 +65,7 @@ class Problem(u.Canonical):
         self._value = None
         self._status = None
         self.solver = None
+        self.primal_dual_variables = None
 
     @property
     def value(self):
@@ -288,6 +289,11 @@ class Problem(u.Canonical):
                                                 dims=dims, kktsolver=kktsolver)
                 status = s.SOLVER_STATUS[s.CVXOPT][results['status']]
                 primal_val = results['primal objective']
+                self.primal_dual_variables = dict()
+                self.primal_dual_variables['x'] = results['x']
+                self.primal_dual_variables['s'] = results['s']
+                self.primal_dual_variables['y'] = results['y']
+                self.primal_dual_variables['z'] = results['z']
         else: # If possible, target ECOS.
             # Solver type:
             self.solver = s.ECOS
